@@ -509,7 +509,6 @@ Section "Main" SectionMain
   Call WriteEnvVar
   
   ; Install mapproxy
-  ;C:\Program Files\MapProxy-1.6.0>app\scripts\easy_install -zmaxd eggs mapproxy==1.6.0 Shapely pyproj cherrypy>=3.2
   nsExec::ExecToLog '"$INSTDIR\App\Scripts\easy_install.exe" -f "eggs" mapproxy==${VERSION} Shapely pyproj cherrypy>=3.2'
   nsExec::ExecToLog '"$INSTDIR\App\Scripts\mapproxy-util.exe" --version'
   ${If} $IsExisting == 1
@@ -542,15 +541,6 @@ Section "Main" SectionMain
 	${ConfigWrite} "$INSTDIR\app.py" "DATA_DIR=" "r'$DataDir'" $R0
 
   ${EndIf}
-
-  ; Security (of sorts)
-  ;AccessControl::GrantOnFile "$DataDir" "(BU)" "FullAccess"
-  ;${If} $IsManual == 1 ; manual
-  ;  AccessControl::GrantOnFile "$INSTDIR\" "(BU)" "FullAccess"
-  ;${ElseIf} $IsManual == 0 ; service
-  ;  AccessControl::GrantOnFile "$INSTDIR\logs" "NT AUTHORITY\Network Service" "FullAccess"
-  ;  AccessControl::GrantOnFile "$DataDir" "NT AUTHORITY\Network Service" "FullAccess"
-  ;${EndIf}
 
 SectionEnd
 
