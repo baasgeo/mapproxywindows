@@ -1,0 +1,4 @@
+MapProxyWindows
+===============
+
+MapProxy windows installer
