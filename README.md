@@ -1,20 +1,21 @@
-# MapProxyWindows
+# MapProxy Windows installer
 
-Windows installer for the excellend MapProxy tile cache solution, see http://mapproxy.org. This is not an official distribution for MapProxy and is in no way endorsed by the folks at MapProxy.org.
+Windows installer for the excellend tile cache solution MapProxy, see http://mapproxy.org. This is not an official distribution for MapProxy and is in no way endorsed by [MapProxy](http://mapproxy.org) creators.
 
-This installer is created to have an easy to use installation on Windows based systems. 
+The aim of this installer is to have an easy to use MapProxy installation on Windows based systems. 
 
 ## Download
 
-You can download the latest build [here](https://github.com/bartbaas/MapProxyWindows/releases/download/1.6.0-RC1/MapProxy-1.6.0-RC1.exe).
+You can download the latest build [here](https://github.com/bartbaas/MapProxyWindows/releases/download/1.6.0-RC1/MapProxy-1.6.0-RC2.exe).
 
 ## Usage
 
-The installer should setup MapProxy out of the box. Just download the executable and run the wizard. When the installation is completed, MapProxy is ready to run.
+The installer should setup MapProxy out of the box. Just download the executable and run the wizard, the default settings are just fine. When the installation is completed, MapProxy is ready to run. Go to Start Menu -> Programs -> MapProxy 1.x.x -> Start MapProxy to start the server. 
+The demo page is also available at the Start Menu, MapProxy Web Admin Page.
 
 ## Documentation
 
-This MapProxy uses [Portable Python](http://portablepython.com/wiki/Download/) 2.7.5 to not depend or interfere on/with other Python installations. MapProxy is configured with [CherryPy](http://www.cherrypy.org/) on top as WSGI webserver. Mark Hammond's pywin32 package is used to run MapProxy as windows service.
+This MapProxy uses [Portable Python](http://portablepython.com/wiki/Download/) 2.7.5 to not depend or interfere on/with other Python installations. MapProxy is configured with [CherryPy](http://www.cherrypy.org/) on top as WSGI webserver. Pywin32 is used to run MapProxy as windows service.
 
 Documentation for MapProxy is available at http://mapproxy.org/documentation.html.
 
@@ -47,4 +48,4 @@ Created and maintained by Bart Baas
 
 ## License
 
-This installer is released under the GPL License. See http://www.gnu.org/licenses/gpl.html for additional information.
+This installer is released under the GPL License. See http://www.gnu.org/licenses/gpl.html for additional information. MapProxy s released under the [Apache Software License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html). 
