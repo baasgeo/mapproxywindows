@@ -3,7 +3,7 @@
  * 
  * MapProxy Windows installer creation file.
  * Installer is published under the GPL license.
- * See https://raw.github.com/bartbaas/geoatlas/master/license.txt for the full text
+ * See http://www.gnu.org/licenses/gpl.html for the full text
  * of the license.
  *
  * Author: Bart Baas <info@baasgeo.com>
@@ -13,9 +13,11 @@
 !define APPNAME "MapProxy"
 !define VERSION 1.6.0
 !define APPNAMEANDVERSION "${APPNAME} ${VERSION}"
+!define GITPAGE "http://github.com/bartbaas/mapproxywindows"
 
 ; Main Install settings
 Name "${APPNAMEANDVERSION}"
+BrandingText "${GITPAGE}"
 InstallDir "$PROGRAMFILES\${APPNAME}-${VERSION}"
 InstallDirRegKey HKLM "Software\${APPNAME}" ""
 OutFile "${APPNAME}-${VERSION}.exe"
@@ -58,7 +60,7 @@ VIAddVersionKey ProductName "${APPNAME}"
 VIAddVersionKey FileDescription "${APPNAME} Installer"
 VIAddVersionKey ProductVersion "${VERSION}.0"
 VIAddVersionKey FileVersion "${VERSION}.0"
-VIAddVersionKey Comments "http://mapproxy.org"
+VIAddVersionKey Comments "${GITPAGE}"
 
 ; Install options page headers
 LangString TEXT_DATADIR_TITLE ${LANG_ENGLISH} "${APPNAME} Data Directory"
@@ -88,7 +90,9 @@ LangString TEXT_PORT_SUBTITLE ${LANG_ENGLISH} "Set the port that ${APPNAME} will
 ; "Are you sure you wish to cancel" popup.
 !define MUI_ABORTWARNING
 
-; Optional welcome text here
+; Optional text settings here
+!define MUI_FINISHPAGE_LINK " Installer created and maintained by Bart Baas $\n ${GITPAGE}"
+!define MUI_FINISHPAGE_LINK_LOCATION "${GITPAGE}"
 !define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of ${APPNAMEANDVERSION}. \r\n\r\n\
 	It is recommended that you close all other applications before starting Setup.\
 	This will make it possible to update relevant system files without having to reboot your computer.\r\n\r\n\
@@ -108,7 +112,7 @@ Page custom Port                                              ; Set web server p
 Page custom InstallType InstallTypeLeave                      ; Manual/Service
 Page custom Ready                                             ; Summary page
 !insertmacro MUI_PAGE_INSTFILES                               ; Actually do the install
-;!insertmacro MUI_PAGE_FINISH                                  ; Done
+!insertmacro MUI_PAGE_FINISH                                  ; Done
 
 ; Uninstall Page order
 !insertmacro MUI_UNPAGE_CONFIRM   ; Are you sure you wish to uninstall?
