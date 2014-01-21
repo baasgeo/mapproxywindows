@@ -2,7 +2,7 @@
 
 Windows installer for the excellend tile cache solution MapProxy, see http://mapproxy.org. This is not an official distribution for MapProxy and is in no way endorsed by [MapProxy](http://mapproxy.org) creators.
 
-The aim of this installer is to have an easy to use MapProxy installation on Windows based systems. 
+The aim of this installer is to make the MapProxy installation as easy, automatic and production-ready as possible on Windows based systems. During installation, it is possible to specify the data directory, server port and whether to run as a Windows service.
 
 ## Download
 
@@ -16,6 +16,10 @@ The demo page is also available at the Start Menu, MapProxy Web Admin Page.
 ## Documentation
 
 This MapProxy uses [Portable Python](http://portablepython.com/wiki/Download/) 2.7.5 to not depend or interfere on/with other Python installations. MapProxy is configured with [CherryPy](http://www.cherrypy.org/) on top as WSGI webserver. Pywin32 is used to run MapProxy as windows service.
+
+Tested as working for:
+- Windows 7 (32 bit)
+- Windows 8 (32 bit)
 
 Documentation for MapProxy is available at http://mapproxy.org/documentation.html.
 
