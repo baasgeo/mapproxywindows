@@ -634,7 +634,7 @@ Section Uninstall
   Push MAPPROXY_HOME
   Call un.DeleteEnvVar
 
-  SetOutPath $TEMP
+  SetShellVarContext all
 	
   ; Delete Shortcuts
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
