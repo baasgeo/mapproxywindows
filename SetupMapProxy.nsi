@@ -594,6 +594,8 @@ Section -FinishSection
 	
 	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Start ${APPNAME}.lnk" "$INSTDIR\start_mapproxy.bat" \
 				 "" "$INSTDIR\mapproxy.ico" 0
+	
+	${ShellLinkSetRunAs} "$SMPROGRAMS\$StartMenuFolder\Start ${APPNAME}.lnk" $R0
 
   ${EndIf}
 
