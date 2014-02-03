@@ -20,6 +20,7 @@ This MapProxy uses [Portable Python](http://portablepython.com/wiki/Download/) 2
 Tested as working for:
 - Windows 7 (32 bit)
 - Windows 8 (32 bit)
+- Windows server 2008 (64 bit)
 
 Documentation for MapProxy is available at http://mapproxy.org/documentation.html.
 
