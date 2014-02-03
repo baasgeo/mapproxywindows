@@ -52,4 +52,4 @@ Created and maintained by Bart Baas
 
 ## License
 
-This installer is released under the GPL License. See http://www.gnu.org/licenses/gpl.html for additional information. MapProxy s released under the [Apache Software License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html). 
+This installer and MapProxy are released under the [Apache Software License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html). See http://www.apache.org/licenses/LICENSE-2.0.html for additional information.
