@@ -6,7 +6,7 @@ The aim of this installer is to make the MapProxy installation as easy, automati
 
 ## Download
 
-You can download the latest build [here](https://github.com/bartbaas/MapProxyWindows/releases/download/1.6.0/MapProxy-1.6.0.exe).
+You can download the latest build [here](https://github.com/bartbaas/MapProxyWindows/releases/download/1.6.0.1/MapProxy-1.6.0.1.exe).
 
 ## Usage
 
