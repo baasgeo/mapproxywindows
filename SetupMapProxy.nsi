@@ -64,11 +64,11 @@ Var Port
 Var PortHWND
 
 ;Version Information (Version tab for EXE properties)
-VIProductVersion "${VERSION}.0"
+VIProductVersion "${VERSION}.1"
 VIAddVersionKey ProductName "${APPNAME}"
 VIAddVersionKey FileDescription "${APPNAME} Installer"
-VIAddVersionKey ProductVersion "${VERSION}.0"
-VIAddVersionKey FileVersion "${VERSION}.0"
+VIAddVersionKey ProductVersion "${VERSION}.1"
+VIAddVersionKey FileVersion "${VERSION}.1"
 VIAddVersionKey Comments "${GITPAGE}"
 
 ; Install options page headers
