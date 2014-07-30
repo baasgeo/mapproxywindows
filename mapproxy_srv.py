@@ -34,7 +34,7 @@ DATA_DIR=r'C:\programs\mapproxy\data_dir'
 class MyService(win32serviceutil.ServiceFramework):
     """NT Service."""
     
-    _svc_name_ = 'MapProxy'
+    _svc_name_ = 'MapProxy-' + VERSION
     _svc_display_name_ = 'MapProxy ' + VERSION
     _svc_description_ = 'This service runs the MapProxy tile server'
 

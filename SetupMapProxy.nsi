@@ -20,6 +20,7 @@
 
 ; Define your application name
 !define APPNAME "MapProxy"
+!define COMPANY "Baas geo-information"
 !define VERSION 1.7.1
 !define SEQ 0
 !define APPNAMEANDVERSION "${APPNAME} ${VERSION}"
@@ -29,8 +30,7 @@
 Name "${APPNAMEANDVERSION}"
 BrandingText "${GITPAGE}"
 InstallDir "$PROGRAMFILES\${APPNAME}-${VERSION}"
-InstallDirRegKey HKLM "Software\${APPNAME}" ""
-OutFile "${APPNAME}-${VERSION}-RC1.exe"
+OutFile "${APPNAME}-${VERSION}-RC2.exe"
 
 ;Compression options
 CRCCheck on
@@ -70,6 +70,8 @@ VIAddVersionKey ProductName "${APPNAME}"
 VIAddVersionKey FileDescription "${APPNAME} Installer"
 VIAddVersionKey ProductVersion "${VERSION}.${SEQ}"
 VIAddVersionKey FileVersion "${VERSION}.${SEQ}"
+VIAddVersionKey CompanyName "${COMPANY}"
+VIAddVersionKey LegalCopyright "${COMPANY}"
 VIAddVersionKey Comments "${GITPAGE}"
 
 ; Install options page headers
@@ -94,7 +96,7 @@ LangString TEXT_PORT_SUBTITLE ${LANG_ENGLISH} "Set the port that ${APPNAME} will
 
 ;Start Menu Folder Page Configuration
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM" 
-!define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${APPNAME}" 
+!define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${APPNAME}-${VERSION}" 
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
 
 ; "Are you sure you wish to cancel" popup.
