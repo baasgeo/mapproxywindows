@@ -20,7 +20,8 @@
 
 ; Define your application name
 !define APPNAME "MapProxy"
-!define VERSION 1.6.0
+!define VERSION 1.7.1
+!define SEQ 0
 !define APPNAMEANDVERSION "${APPNAME} ${VERSION}"
 !define GITPAGE "http://github.com/bartbaas/mapproxywindows"
 
@@ -29,7 +30,7 @@ Name "${APPNAMEANDVERSION}"
 BrandingText "${GITPAGE}"
 InstallDir "$PROGRAMFILES\${APPNAME}-${VERSION}"
 InstallDirRegKey HKLM "Software\${APPNAME}" ""
-OutFile "${APPNAME}-${VERSION}.exe"
+OutFile "${APPNAME}-${VERSION}-RC1.exe"
 
 ;Compression options
 CRCCheck on
@@ -64,11 +65,11 @@ Var Port
 Var PortHWND
 
 ;Version Information (Version tab for EXE properties)
-VIProductVersion "${VERSION}.1"
+VIProductVersion "${VERSION}.${SEQ}"
 VIAddVersionKey ProductName "${APPNAME}"
 VIAddVersionKey FileDescription "${APPNAME} Installer"
-VIAddVersionKey ProductVersion "${VERSION}.1"
-VIAddVersionKey FileVersion "${VERSION}.1"
+VIAddVersionKey ProductVersion "${VERSION}.${SEQ}"
+VIAddVersionKey FileVersion "${VERSION}.${SEQ}"
 VIAddVersionKey Comments "${GITPAGE}"
 
 ; Install options page headers
@@ -100,7 +101,7 @@ LangString TEXT_PORT_SUBTITLE ${LANG_ENGLISH} "Set the port that ${APPNAME} will
 !define MUI_ABORTWARNING
 
 ; Optional text settings here
-!define MUI_FINISHPAGE_LINK " Installer created and maintained by Bart Baas $\n ${GITPAGE}"
+!define MUI_FINISHPAGE_LINK " Installer created and maintained by B. Baas $\n ${GITPAGE}"
 !define MUI_FINISHPAGE_LINK_LOCATION "${GITPAGE}"
 !define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of ${APPNAMEANDVERSION}. \r\n\r\n\
 	It is recommended that you close all other applications before starting Setup.\
