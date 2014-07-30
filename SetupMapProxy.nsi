@@ -571,6 +571,7 @@ Section -FinishSection
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 
   ;Create shortcuts
+  SetShellVarContext all
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Homepage.lnk" "http://mapproxy.org"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Web Admin Page.lnk" "http://localhost:$Port/mapproxy"
