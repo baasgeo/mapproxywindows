@@ -32,7 +32,8 @@
             <h2>
                <a name="download" class="anchor" href="#download"><span class="octicon octicon-link"></span></a>Download
             </h2>
-            <p>You can download the latest build <a href="https://github.com/bartbaas/MapProxyWindows/releases/download/1.6.0.1/MapProxy-1.6.0.1.exe">here</a>.</p>
+            <p>You can download the latest stable build of the installer here: <a href="https://github.com/bartbaas/MapProxyWindows/releases/download/1.6.0.1/MapProxy-1.6.0.1.exe">MapProxy 1.6</a></p>
+            <p>A test build for the latest MapProxy is available here: <a href="https://github.com/bartbaas/MapProxyWindows/releases/download/1.7.1-RC1/MapProxy-1.7.1-RC1.exe">MapProxy 1.7 RC1</a></p>
             <h2>
                <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage
             </h2>
@@ -54,20 +55,17 @@
                <a name="how-to-build" class="anchor" href="#how-to-build"><span class="octicon octicon-link"></span></a>How To Build
             </h2>
             <p>For developers wanting to improve or modify this installer, clone this repository first.</p>
-            <pre>
-               <code>
-               $ git clone https://github.com/bartbaas/MapProxyWindows.git
-               $ cd MapProxyWindows
-               </code>
-            </pre>
+            <pre><code>$ git clone https://github.com/bartbaas/MapProxyWindows.git
+$ cd MapProxyWindows
+</code></pre>
             <p>Make sure you have<code>NSIS</code> and <code>git</code> installed in your system, if not, grab it at <a href="http://nsis.sourceforge.net">http://nsis.sourceforge.net</a> and <a href="http://git-scm.com/download/win">http://git-scm.com/download/win</a>.</p>
             <p>Now download <a href="http://portablepython.com/wiki/Download/">Portable Python</a> 2.7.5 and install the file to the <code>PortablePython</code> directory. During the extraction wizard, choose the minimal install and select the optional modules PIL and PyWin32.</p>
             <p>Offline setup is provided by including the egg files for MapProxy. These files have to be downloaded before running the NSIS compiler. Get the egg files by running <code>easy_install</code> from the portable python folder and save them to the folder <code>eggs</code>.</p>
-            <pre>
-               <code>$ PortablePython\App\Scripts\easy_install -zmaxd eggs mapproxy==1.6.0 Shapely pyproj cherrypy==3.2.4</code>
-            </pre>
+            <pre><code>$ PortablePython\App\Scripts\easy_install -zmaxd eggs mapproxy==1.6.0 Shapely pyproj cherrypy==3.2.4
+</code></pre>
             <p>Now everything is ready to for NSIS. Create the installer by using the <code>makensis</code> program.</p>
-            <pre><code>$ makensis SetupMapProxy.nsi</code></pre>
+            <pre><code>$ makensis SetupMapProxy.nsi
+</code></pre>
             <h2>
                <a name="contact" class="anchor" href="#contact"><span class="octicon octicon-link"></span></a>Contact
             </h2>
