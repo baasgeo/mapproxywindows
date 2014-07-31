@@ -25,6 +25,8 @@
 !define SEQ 0
 !define APPNAMEANDVERSION "${APPNAME} ${VERSION}"
 !define GITPAGE "http://github.com/bartbaas/mapproxywindows"
+!define SETTINGSREGPATH "Software\Baasgeo\${APPNAME}"
+!define UNINSTALLREGPATH "Software\Microsoft\Windows\CurrentVersion\Uninstall"
 
 ; Main Install settings
 Name "${APPNAMEANDVERSION}"
@@ -32,7 +34,7 @@ BrandingText "${GITPAGE}"
 InstallDir "$PROGRAMFILES\${APPNAME}-${VERSION}"
 OutFile "${APPNAME}-${VERSION}-RC2.exe"
 
-;Compression options
+; Compression options
 CRCCheck on
 
 ; For Vista
@@ -47,6 +49,24 @@ RequestExecutionLevel admin
 !include "StrFunc.nsh" ; String functions
 !include "LogicLib.nsh" ; ${If} ${Case} etc.
 !include "nsDialogs.nsh" ; For Custom page layouts (Radio buttons etc)
+
+; Macro's
+!define FindRegSetting "!insertmacro FindRegSetting"
+!macro FindRegSetting _Key _Result
+	Push ${_Key}
+	
+	StrCpy $0 0
+	loop:
+	  EnumRegKey $1 HKLM "${SETTINGSREGPATH}" $0
+	  StrCmp $1 "" done
+	  ReadRegStr ${_Result} HKLM "${SETTINGSREGPATH}\$1" ${_Key}
+	  IntOp $0 $0 + 1
+	  goto loop
+	done:
+	StrCpy $0 ""
+	StrCpy $1 ""
+	Push ${_Result}
+!macroend
 
 ; Might be the same as !define
 Var StartMenuFolder
@@ -64,7 +84,7 @@ Var Service
 Var Port
 Var PortHWND
 
-;Version Information (Version tab for EXE properties)
+; Version Information (Version tab for EXE properties)
 VIProductVersion "${VERSION}.${SEQ}"
 VIAddVersionKey ProductName "${APPNAME}"
 VIAddVersionKey FileDescription "${APPNAME} Installer"
@@ -86,7 +106,7 @@ LangString TEXT_CREDS_SUBTITLE ${LANG_ENGLISH} "Set administrator credentials"
 LangString TEXT_PORT_TITLE ${LANG_ENGLISH} "${APPNAME} Web Server Port"
 LangString TEXT_PORT_SUBTITLE ${LANG_ENGLISH} "Set the port that ${APPNAME} will respond on"
 
-;Interface Settings
+; Interface Settings
 !define MUI_ICON "mapproxy.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\win-uninstall.ico"
 !define MUI_HEADERIMAGE
@@ -94,9 +114,9 @@ LangString TEXT_PORT_SUBTITLE ${LANG_ENGLISH} "Set the port that ${APPNAME} will
 !define MUI_HEADERIMAGE_BITMAP header.bmp
 !define MUI_WELCOMEFINISHPAGE_BITMAP side_left.bmp
 
-;Start Menu Folder Page Configuration
+; Start Menu Folder Page Configuration
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM" 
-!define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${APPNAME}-${VERSION}" 
+!define MUI_STARTMENUPAGE_REGISTRY_KEY "${SETTINGSREGPATH}\${VERSION}" 
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
 
 ; "Are you sure you wish to cancel" popup.
@@ -162,7 +182,12 @@ FunctionEnd
 Function FindDataDirPath
 
   ClearErrors
+  ; First check for variable
   ReadEnvStr $1 MAPPROXY_DATA_DIR
+  ; Otherwise check for registry setting
+  ${If} $1 == ""
+    ${FindRegSetting} "DataDir" $1
+  ${EndIf}
   IfFileExists $1 NoErrors Errors
 
   NoErrors:
@@ -187,11 +212,10 @@ Function GetDataDir
 
   ${If} $DataDir == ""
     Call FindDataDirPath
-    Pop $DataDir
+	Pop $DataDir
   ${EndIf}
 
 FunctionEnd
-
 
 ; Data_dir page display
 Function DataDir
@@ -261,7 +285,6 @@ Function DataDir
   nsDialogs::Show
   
 FunctionEnd
-
 
 ; Runs when page is initialized
 Function DataDirPathValidInit
@@ -367,7 +390,15 @@ Function Port
   !insertmacro MUI_HEADER_TEXT "$(TEXT_PORT_TITLE)" "$(TEXT_PORT_SUBTITLE)"
   nsDialogs::Create 1018
 
+  ; Find the port used on the system
+  ; First check for variable
+  ReadEnvStr $Port MAPPROXY_PORT
+  ; Otherwise check for registry setting
+  ${If} $1 == ""
+    ${FindRegSetting} "Port" $Port
+  ${EndIf}
   ; Populates defaults on first display, and resets to default user blanked any of the values
+  
   StrCmp $Port "" 0 +2
     StrCpy $Port "8080"
 
@@ -478,30 +509,6 @@ Function Ready
 
 FunctionEnd
 
-; Write an environment variable
-Function WriteEnvVar
-
-  Pop $4
-  Pop $3
-  
-  WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" $3 $4
-  SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
-
-  StrCpy $3 ""
-  StrCpy $4 ""
-
-FunctionEnd
-
-; Remove an environment variable
-Function un.DeleteEnvVar
-
-  Pop $3
-  DeleteRegValue HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" $3
-  StrCpy $3 ""
-
-FunctionEnd
-
-
 ; The main install section
 Section "Main" SectionMain
 	
@@ -515,14 +522,14 @@ Section "Main" SectionMain
   File /a mapproxy.ico
   File /r eggs
   File /r PortablePython\App
+  
+  ;Push "MAPPROXY_PORT"
+  ;Push "$Port"
+  ;Call WriteEnvVar
 
-  Push "MAPPROXY_HOME"
-  Push "$INSTDIR"
-  Call WriteEnvVar
-
-  Push "MAPPROXY_DATA_DIR"
-  Push "$DataDir"
-  Call WriteEnvVar
+  ;Push "MAPPROXY_DATA_DIR"
+  ;Push "$DataDir"
+  ;Call WriteEnvVar
   
   ; Install mapproxy
   nsExec::ExecToLog '"$INSTDIR\App\Scripts\easy_install.exe" -f "eggs" mapproxy==${VERSION} Shapely pyproj cherrypy>=3.2'
@@ -538,23 +545,17 @@ Section "Main" SectionMain
   ${If} $IsManual == 0 ; service
   
     File /a mapproxy_srv.py
-	${ConfigWrite} "$INSTDIR\mapproxy_srv.py" "VERSION=" "'${VERSION}'" $R0
-	${ConfigWrite} "$INSTDIR\mapproxy_srv.py" "PORT_TO_BIND=" "$Port" $R0
-	${ConfigWrite} "$INSTDIR\mapproxy_srv.py" "SERVER_IP=" "'0.0.0.0'" $R0
-	${ConfigWrite} "$INSTDIR\mapproxy_srv.py" "APP_CONFIG=" "r'$DataDir\mapproxy.yaml'" $R0
-	${ConfigWrite} "$INSTDIR\mapproxy_srv.py" "LOG_CONF=" "r'$DataDir\log.ini'" $R0
-	${ConfigWrite} "$INSTDIR\mapproxy_srv.py" "DATA_DIR=" "r'$DataDir'" $R0
+	${ConfigWrite} "$INSTDIR\mapproxy_srv.py" "version=" "'${VERSION}'" $R0
+	${ConfigWrite} "$INSTDIR\mapproxy_srv.py" "subkey=" "r'${SETTINGSREGPATH}\${VERSION}'" $R0
+	${ConfigWrite} "$INSTDIR\mapproxy_srv.py" "server_ip=" "'0.0.0.0'" $R0
   
 	nsExec::ExecToLog '"$INSTDIR\App\python.exe" "$INSTDIR\mapproxy_srv.py" install'
 	
   ${ElseIf} $IsManual == 1 ; manual
   
     File /a app.py
-	${ConfigWrite} "$INSTDIR\app.py" "PORT_TO_BIND=" "$Port" $R0
-	${ConfigWrite} "$INSTDIR\app.py" "SERVER_IP=" "'0.0.0.0'" $R0
-	${ConfigWrite} "$INSTDIR\app.py" "APP_CONFIG=" "r'$DataDir\mapproxy.yaml'" $R0
-	${ConfigWrite} "$INSTDIR\app.py" "LOG_CONF=" "r'$DataDir\log.ini'" $R0
-	${ConfigWrite} "$INSTDIR\app.py" "DATA_DIR=" "r'$DataDir'" $R0
+	${ConfigWrite} "$INSTDIR\app.py" "subkey=" "r'${SETTINGSREGPATH}\${VERSION}'" $R0
+	${ConfigWrite} "$INSTDIR\app.py" "server_ip=" "'0.0.0.0'" $R0
 
   ${EndIf}
 
@@ -615,11 +616,14 @@ Section -FinishSection
   !insertmacro MUI_STARTMENU_WRITE_END
 
   ; Registry
-  WriteRegStr HKLM "Software\${APPNAME}" "" "$INSTDIR"
+  WriteRegStr HKLM "${SETTINGSREGPATH}\${VERSION}" "" "$INSTDIR"
+  WriteRegStr HKLM "${SETTINGSREGPATH}\${VERSION}" "Version" "${VERSION}"
+  WriteRegStr HKLM "${SETTINGSREGPATH}\${VERSION}" "Port" "$Port"
+  WriteRegStr HKLM "${SETTINGSREGPATH}\${VERSION}" "DataDir" "$DataDir"
 
   ; For the Add/Remove programs area
-  !define UNINSTALLREGPATH "Software\Microsoft\Windows\CurrentVersion\Uninstall"
-  WriteRegStr HKLM "${UNINSTALLREGPATH}\${APPNAMEANDVERSION}" "DisplayName" "${APPNAMEANDVERSION}"
+  WriteRegStr HKLM "${UNINSTALLREGPATH}\${APPNAMEANDVERSION}" "DisplayName" "${APPNAME}"
+  WriteRegStr HKLM "${UNINSTALLREGPATH}\${APPNAMEANDVERSION}" "Version" "${VERSION}"
   WriteRegStr HKLM "${UNINSTALLREGPATH}\${APPNAMEANDVERSION}" "UninstallString" "$INSTDIR\uninstall.exe"
   WriteRegStr HKLM "${UNINSTALLREGPATH}\${APPNAMEANDVERSION}" "InstallLocation" "$INSTDIR"
   WriteRegStr HKLM "${UNINSTALLREGPATH}\${APPNAMEANDVERSION}" "DisplayIcon" "$INSTDIR\mapproxy.ico"
@@ -645,9 +649,7 @@ Section Uninstall
     ;Nothing to do here
   Continue:
 
-  ; Remove env var
-  Push MAPPROXY_HOME
-  Call un.DeleteEnvVar
+  ; Do not remove env var MAPPROXY_DATA_DIR and MAPPROXY_PORT
 
   SetShellVarContext all
 	
@@ -657,7 +659,7 @@ Section Uninstall
   
   ;Remove from registry...
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAMEANDVERSION}"
-  DeleteRegKey HKLM "SOFTWARE\${APPNAME}"
+  DeleteRegKey HKLM "${SETTINGSREGPATH}\${VERSION}"
 
   ; Delete self
   Delete "$INSTDIR\uninstall.exe"
