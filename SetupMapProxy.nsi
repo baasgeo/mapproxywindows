@@ -32,7 +32,7 @@
 Name "${APPNAMEANDVERSION}"
 BrandingText "${GITPAGE}"
 InstallDir "$PROGRAMFILES\${APPNAME}-${VERSION}"
-OutFile "${APPNAME}-${VERSION}-RC2.exe"
+OutFile "${APPNAME}-${VERSION}-RC3.exe"
 
 ; Compression options
 CRCCheck on
@@ -43,12 +43,11 @@ RequestExecutionLevel admin
 ; Plugins
 !include ConfigWrite.nsh
 !include ShellLinkRunAs.nsh
- 
-; Modern interface settings
-!include "MUI.nsh" ; Modern interface
-!include "StrFunc.nsh" ; String functions
-!include "LogicLib.nsh" ; ${If} ${Case} etc.
-!include "nsDialogs.nsh" ; For Custom page layouts (Radio buttons etc)
+!include MUI.nsh ; Modern interface
+!include StrFunc.nsh ; String functions
+!include LogicLib.nsh ; ${If} ${Case} etc.
+!include nsDialogs.nsh ; For Custom page layouts (Radio buttons etc)
+!include x64.nsh ; Check for 32/64 bit system
 
 ; Macro's
 !define FindRegSetting "!insertmacro FindRegSetting"
@@ -575,9 +574,16 @@ Section -FinishSection
   FileWrite $9 `FOR /f "tokens=2*" %%a IN ('reg query "HKLM\${SETTINGSREGPATH}\${VERSION}" /v Port 2^>^&1^|find "REG_"') DO @set PORT=%%b`
   FileWrite $9 '$\r$\n'
   FileWrite $9 'start "MapProxy admin" "http://localhost:%PORT%/mapproxy"'
-  FileClose $9 ; Closes the file
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Web Admin Page.lnk" "$INSTDIR\open_admin.bat" \
-			 "" "%SystemRoot%\system32\shell32.dll" 72
+  FileClose $9
+  ${If} ${RunningX64}
+	  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Web Admin Page.lnk" "%windir%\SysWoW64\cmd.exe /c '$INSTDIR\open_admin.bat'" \
+				 "" "%SystemRoot%\system32\shell32.dll" 72
+
+  ${Else}
+	  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Web Admin Page.lnk" "$INSTDIR\open_admin.bat" \
+				 "" "%SystemRoot%\system32\shell32.dll" 72
+  ${EndIf}
+
 			 
   ; Link to data directory		 
   FileOpen $9 open_data.bat w ; Opens a Empty File and fills it
@@ -587,8 +593,13 @@ Section -FinishSection
   FileWrite $9 '$\r$\n'
   FileWrite $9 'start "MapProxy data" %DATADIR%'
   FileClose $9 ; Closes the file
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Data Directory.lnk" "$INSTDIR\open_data.bat" \
-			 "" "%SystemRoot%\system32\shell32.dll" 4
+  ${If} ${RunningX64} ; Settings are stored in 32 bit registry
+	  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Data Directory.lnk" "%windir%\SysWoW64\cmd.exe /c '$INSTDIR\open_data.bat'" \
+				 "" "%SystemRoot%\system32\shell32.dll" 4
+  ${Else}
+	  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Data Directory.lnk" "$INSTDIR\open_data.bat" \
+				 "" "%SystemRoot%\system32\shell32.dll" 4
+  ${EndIf}
 
   ${If} $IsManual == 0  ; service
   
