@@ -568,15 +568,35 @@ Section -FinishSection
   CopyFiles "$INSTDIR\App\python27.dll" "$INSTDIR\App\Lib\site-packages\win32"
   CopyFiles "$INSTDIR\App\pywintypes27.dll" "$INSTDIR\App\Lib\site-packages\win32"
 
-  ;Start Menu
+  ; Start Menu
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 
-  ;Create shortcuts
+  ; Create shortcuts
   SetShellVarContext all
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Homepage.lnk" "http://mapproxy.org"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Web Admin Page.lnk" "http://localhost:$Port/mapproxy"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Data Directory.lnk" "$DataDir"
+  
+  ; Link to web admin page
+  FileOpen $9 open_admin.bat w ; Opens a Empty File and fills it
+  FileWrite $9 '@ECHO OFF'
+  FileWrite $9 '$\r$\n'
+  FileWrite $9 `FOR /f "tokens=2*" %%a IN ('reg query "HKLM\${SETTINGSREGPATH}\${VERSION}" /v Port 2^>^&1^|find "REG_"') DO @set PORT=%%b`
+  FileWrite $9 '$\r$\n'
+  FileWrite $9 'start "MapProxy admin" "http://localhost:%PORT%/mapproxy"'
+  FileClose $9 ; Closes the file
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Web Admin Page.lnk" "$INSTDIR\open_admin.bat" \
+			 "" "%SystemRoot%\system32\shell32.dll" 72
+			 
+  ; Link to data directory		 
+  FileOpen $9 open_data.bat w ; Opens a Empty File and fills it
+  FileWrite $9 '@ECHO OFF'
+  FileWrite $9 '$\r$\n'
+  FileWrite $9 `FOR /f "tokens=2*" %%a IN ('reg query "HKLM\${SETTINGSREGPATH}\${VERSION}" /v DataDir 2^>^&1^|find "REG_"') DO @set DATADIR=%%b`
+  FileWrite $9 '$\r$\n'
+  FileWrite $9 'start "MapProxy data" %DATADIR%'
+  FileClose $9 ; Closes the file
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Data Directory.lnk" "$INSTDIR\open_data.bat" \
+			 "" "%SystemRoot%\system32\shell32.dll" 4
 
   ${If} $IsManual == 0  ; service
   
@@ -595,6 +615,7 @@ Section -FinishSection
 	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Stop ${APPNAME}.lnk" "$INSTDIR\stop_mapproxy.bat" \
 				 "" "$INSTDIR\mapproxy.ico" 0
 
+	; Must run as admin
     ${ShellLinkSetRunAs} "$SMPROGRAMS\$StartMenuFolder\Start ${APPNAME}.lnk" $R0
 	${ShellLinkSetRunAs} "$SMPROGRAMS\$StartMenuFolder\Stop ${APPNAME}.lnk" $R0
 
@@ -608,8 +629,6 @@ Section -FinishSection
 	
 	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Start ${APPNAME}.lnk" "$INSTDIR\start_mapproxy.bat" \
 				 "" "$INSTDIR\mapproxy.ico" 0
-	
-	${ShellLinkSetRunAs} "$SMPROGRAMS\$StartMenuFolder\Start ${APPNAME}.lnk" $R0
 
   ${EndIf}
 
@@ -635,7 +654,7 @@ Section -FinishSection
 
 SectionEnd
 
-;Uninstall section
+; Uninstall section
 Section Uninstall
 
   ; Stop
@@ -646,7 +665,7 @@ Section Uninstall
     nsExec::ExecToLog '"$INSTDIR\App\python.exe" "$INSTDIR\mapproxy_srv.py" remove"'
     Goto Continue
   StopManual:
-    ;Nothing to do here
+    ; Nothing to do here
   Continue:
 
   ; Do not remove env var MAPPROXY_DATA_DIR and MAPPROXY_PORT
