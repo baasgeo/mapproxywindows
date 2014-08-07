@@ -394,7 +394,7 @@ Function Port
   ; First check for variable
   ReadEnvStr $Port MAPPROXY_PORT
   ; Otherwise check for registry setting
-  ${If} $1 == ""
+  ${If} $Port == ""
     ${FindRegSetting} "Port" $Port
   ${EndIf}
   ; Populates defaults on first display, and resets to default user blanked any of the values
