@@ -523,14 +523,6 @@ Section "Main" SectionMain
   File /r eggs
   File /r PortablePython\App
   
-  ;Push "MAPPROXY_PORT"
-  ;Push "$Port"
-  ;Call WriteEnvVar
-
-  ;Push "MAPPROXY_DATA_DIR"
-  ;Push "$DataDir"
-  ;Call WriteEnvVar
-  
   ; Install mapproxy
   nsExec::ExecToLog '"$INSTDIR\App\Scripts\easy_install.exe" -f "eggs" mapproxy==${VERSION} Shapely pyproj cherrypy>=3.2'
   nsExec::ExecToLog '"$INSTDIR\App\Scripts\mapproxy-util.exe" --version'
