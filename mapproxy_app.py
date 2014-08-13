@@ -31,7 +31,7 @@ if __name__ == '__main__':
         fileConfig(log_conf, {'here': data_dir})
         application=make_wsgi_app(app_config)
         d=wsgiserver.WSGIPathInfoDispatcher({'/mapproxy': application})
-        server=wsgiserver.CherryPyWSGIServer( (server_ip, port_to_bind), d, numthreads=10, server_name=None, max=-1, request_queue_size=5, timeout=10, shutdown_timeout=5)
+        server=wsgiserver.CherryPyWSGIServer( (server_ip, port_to_bind), d, numthreads=10, server_name=None, max=-1, request_queue_size=2048, timeout=10, shutdown_timeout=5)
         
         server.start()
         
