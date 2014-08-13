@@ -32,7 +32,7 @@
 Name "${APPNAMEANDVERSION}"
 BrandingText "${GITPAGE}"
 InstallDir "$PROGRAMFILES\${APPNAME}-${VERSION}"
-OutFile "${APPNAME}-${VERSION}-RC3.exe"
+OutFile "${APPNAME}-${VERSION}.${SEQ}.exe"
 
 ; Compression options
 CRCCheck on
@@ -567,6 +567,7 @@ Section -FinishSection
   SetShellVarContext all
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Homepage.lnk" "http://mapproxy.org"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Installer.lnk" "http://bartbaas.github.io/MapProxyWindows/"
   
   ${ConfigWrite} "$INSTDIR\open_admin.py" "subkey=" "r'${SETTINGSREGPATH}\${VERSION}'" $R0
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Web Admin Page.lnk" \
