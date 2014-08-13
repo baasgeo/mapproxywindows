@@ -40,7 +40,10 @@
             <p>The installer should setup MapProxy out of the box. Just download the executable and run the wizard, the default settings are just fine. When the installation is completed, MapProxy is ready to run. Go to Start Menu -&gt; Programs -&gt; MapProxy 1.x.x -&gt; Start MapProxy to start the server. 
                The demo page is also available at the Start Menu, MapProxy Web Admin Page.
             </p>
-            <h4>Upgrade</h4>
+            <u>Configuration</u>
+            <p>The installer will inspect your system and attempt to automatically populate the dialogs with information contained in the variable %MAPPROXY_DATA_DIR% and %MAPPROXY_PORT%. If this variable is undefined, settings in the registry will be checked. After installation, MapProxy uses the registry settings as runtime startup configuration.
+            </p>
+            <u>Upgrade</u>
             <p>Installations with different version can both coexist without any problems. Just install the new version alongside the old version. To upgrade, install the new MapProxy installation first using the same port number and data directory. After that, stop the old instance and start the new one. If all is running fine, remove the old version.
             </p>
             <h2>
