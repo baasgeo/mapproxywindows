@@ -47,7 +47,6 @@ RequestExecutionLevel admin
 !include StrFunc.nsh ; String functions
 !include LogicLib.nsh ; ${If} ${Case} etc.
 !include nsDialogs.nsh ; For Custom page layouts (Radio buttons etc)
-!include x64.nsh ; Check for 32/64 bit system
 
 ; Macro's
 !define FindRegSetting "!insertmacro FindRegSetting"
@@ -519,6 +518,8 @@ Section "Main" SectionMain
   SetOutPath "$INSTDIR"
   File /a license.txt
   File /a mapproxy.ico
+  File /a open_admin.py
+  File /a open_datadir.py
   File /r eggs
   File /r PortablePython\App
   
@@ -544,9 +545,9 @@ Section "Main" SectionMain
 	
   ${ElseIf} $IsManual == 1 ; manual
   
-    File /a app.py
-	${ConfigWrite} "$INSTDIR\app.py" "subkey=" "r'${SETTINGSREGPATH}\${VERSION}'" $R0
-	${ConfigWrite} "$INSTDIR\app.py" "server_ip=" "'0.0.0.0'" $R0
+    File /a mapproxy_app.py
+	${ConfigWrite} "$INSTDIR\mapproxy_app.py" "subkey=" "r'${SETTINGSREGPATH}\${VERSION}'" $R0
+	${ConfigWrite} "$INSTDIR\mapproxy_app.py" "server_ip=" "'0.0.0.0'" $R0
 
   ${EndIf}
 
@@ -567,71 +568,35 @@ Section -FinishSection
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Homepage.lnk" "http://mapproxy.org"
   
-  ; Link to web admin page
-  FileOpen $9 open_admin.bat w ; Opens a Empty File and fills it
-  FileWrite $9 '@ECHO OFF'
-  FileWrite $9 '$\r$\n'
-  FileWrite $9 `FOR /f "tokens=2*" %%a IN ('reg query "HKLM\${SETTINGSREGPATH}\${VERSION}" /v Port 2^>^&1^|find "REG_"') DO @set PORT=%%b`
-  FileWrite $9 '$\r$\n'
-  FileWrite $9 'start "MapProxy admin" "http://localhost:%PORT%/mapproxy"'
-  FileClose $9
-  ${If} ${RunningX64}
-	  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Web Admin Page.lnk" "%windir%\SysWoW64\cmd.exe /c '$INSTDIR\open_admin.bat'" \
-				 "" "%SystemRoot%\system32\shell32.dll" 72
+  ${ConfigWrite} "$INSTDIR\open_admin.py" "subkey=" "r'${SETTINGSREGPATH}\${VERSION}'" $R0
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Web Admin Page.lnk" \
+					'"$INSTDIR\App\python.exe"' '"$INSTDIR\open_admin.py"'   \
+					"%SystemRoot%\system32\shell32.dll" 72 SW_SHOWMINIMIZED
 
-  ${Else}
-	  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Web Admin Page.lnk" "$INSTDIR\open_admin.bat" \
-				 "" "%SystemRoot%\system32\shell32.dll" 72
-  ${EndIf}
-
-			 
-  ; Link to data directory		 
-  FileOpen $9 open_data.bat w ; Opens a Empty File and fills it
-  FileWrite $9 '@ECHO OFF'
-  FileWrite $9 '$\r$\n'
-  FileWrite $9 `FOR /f "tokens=2*" %%a IN ('reg query "HKLM\${SETTINGSREGPATH}\${VERSION}" /v DataDir 2^>^&1^|find "REG_"') DO @set DATADIR=%%b`
-  FileWrite $9 '$\r$\n'
-  FileWrite $9 'start "MapProxy data" %DATADIR%'
-  FileClose $9 ; Closes the file
-  ${If} ${RunningX64} ; Settings are stored in 32 bit registry
-	  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Data Directory.lnk" "%windir%\SysWoW64\cmd.exe /c '$INSTDIR\open_data.bat'" \
-				 "" "%SystemRoot%\system32\shell32.dll" 4
-  ${Else}
-	  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Data Directory.lnk" "$INSTDIR\open_data.bat" \
-				 "" "%SystemRoot%\system32\shell32.dll" 4
-  ${EndIf}
+  ${ConfigWrite} "$INSTDIR\open_datadir.py" "subkey=" "r'${SETTINGSREGPATH}\${VERSION}'" $R0
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Data Directory.lnk" \
+					'"$INSTDIR\App\python.exe"' '"$INSTDIR\open_datadir.py"' \
+					"%SystemRoot%\system32\shell32.dll" 4 SW_SHOWMINIMIZED
 
   ${If} $IsManual == 0  ; service
-  
-    SetOutPath "$INSTDIR"
 
-	FileOpen $9 start_mapproxy.bat w ; Opens a Empty File and fills it
-	FileWrite $9 'call "$INSTDIR\App\python.exe" "$INSTDIR\mapproxy_srv.py" start' 
-    FileClose $9 ; Closes the file
+	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Start ${APPNAME}.lnk" \
+					'"$INSTDIR\App\python.exe"' '"$INSTDIR\mapproxy_srv.py" start'  \
+					"$INSTDIR\mapproxy.ico" 0 SW_SHOWMINIMIZED
 	
-	FileOpen $9 stop_mapproxy.bat w ; Opens a Empty File and fills it
-	FileWrite $9 'call "$INSTDIR\App\python.exe" "$INSTDIR\mapproxy_srv.py" stop' 
-    FileClose $9 ; Closes the file
-
-	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Start ${APPNAME}.lnk" "$INSTDIR\start_mapproxy.bat" \
-				 "" "$INSTDIR\mapproxy.ico" 0
-	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Stop ${APPNAME}.lnk" "$INSTDIR\stop_mapproxy.bat" \
-				 "" "$INSTDIR\mapproxy.ico" 0
+	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Stop ${APPNAME}.lnk" \
+					'"$INSTDIR\App\python.exe"' '"$INSTDIR\mapproxy_srv.py" stop'  \
+					"$INSTDIR\mapproxy.ico" 0 SW_SHOWMINIMIZED
 
 	; Must run as admin
     ${ShellLinkSetRunAs} "$SMPROGRAMS\$StartMenuFolder\Start ${APPNAME}.lnk" $R0
 	${ShellLinkSetRunAs} "$SMPROGRAMS\$StartMenuFolder\Stop ${APPNAME}.lnk" $R0
 
   ${ElseIf} $IsManual == 1 ; manual
-
-    FileOpen $9 start_mapproxy.bat w ; Opens a Empty File and fills it
-	FileWrite $9 '@ECHO OFF'
-	FileWrite $9 '$\r$\n'
-	FileWrite $9 '"$INSTDIR\App\python.exe" "$INSTDIR\app.py"' 
-    FileClose $9 ; Closes the file
 	
-	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Start ${APPNAME}.lnk" "$INSTDIR\start_mapproxy.bat" \
-				 "" "$INSTDIR\mapproxy.ico" 0
+	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Start ${APPNAME}.lnk" \
+					'"$INSTDIR\App\python.exe"' '"$INSTDIR\mapproxy_app.py"'  \
+					"$INSTDIR\mapproxy.ico" 0
 
   ${EndIf}
 
@@ -672,7 +637,6 @@ Section Uninstall
   Continue:
 
   ; Do not remove env var MAPPROXY_DATA_DIR and MAPPROXY_PORT
-
   SetShellVarContext all
 	
   ; Delete Shortcuts
@@ -690,6 +654,9 @@ Section Uninstall
   Delete license.txt
   Delete mapproxy.ico
   Delete mapproxy_srv.py
+  Delete mapproxy_app.py
+  Delete open_admin.py
+  Delete open_datadir.py
   RMDir /r "$INSTDIR\eggs"
   RMDir /r "$INSTDIR\App"
   Delete "$INSTDIR\*.*"
