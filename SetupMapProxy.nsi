@@ -22,7 +22,7 @@
 !define APPNAME "MapProxy"
 !define COMPANY "Baas geo-information"
 !define VERSION 1.7.1
-!define SEQ 0
+!define SEQ 1
 !define APPNAMEANDVERSION "${APPNAME} ${VERSION}"
 !define GITPAGE "http://github.com/bartbaas/mapproxywindows"
 !define SETTINGSREGPATH "Software\Baasgeo\${APPNAME}"
@@ -524,7 +524,7 @@ Section "Main" SectionMain
   File /r PortablePython\App
   
   ; Install mapproxy
-  nsExec::ExecToLog '"$INSTDIR\App\Scripts\easy_install.exe" -f "eggs" mapproxy==${VERSION} Shapely pyproj cherrypy>=3.2'
+  nsExec::ExecToLog '"$INSTDIR\App\Scripts\easy_install.exe" -f "eggs" mapproxy==${VERSION} Shapely==1.2.17 pyproj==1.9.3 cherrypy==3.5.0'
   nsExec::ExecToLog '"$INSTDIR\App\Scripts\mapproxy-util.exe" --version'
   ${If} $IsExisting == 1
     Detailprint "Using existing data directory: $\r$\n$DataDir"
