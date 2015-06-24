@@ -21,8 +21,8 @@
 ; Define your application name
 !define APPNAME "MapProxy"
 !define COMPANY "Baas geo-information"
-!define VERSION 1.7.1
-!define SEQ 1
+!define VERSION 1.8.0
+!define SEQ 0
 !define APPNAMEANDVERSION "${APPNAME} ${VERSION}"
 !define GITPAGE "http://github.com/bartbaas/mapproxywindows"
 !define SETTINGSREGPATH "Software\Baasgeo\${APPNAME}"
@@ -32,7 +32,7 @@
 Name "${APPNAMEANDVERSION}"
 BrandingText "${GITPAGE}"
 InstallDir "$PROGRAMFILES\${APPNAME}-${VERSION}"
-OutFile "${APPNAME}-${VERSION}.${SEQ}.exe"
+OutFile "${APPNAME}-${VERSION}-RC1.exe"
 
 ; Compression options
 CRCCheck on
@@ -524,7 +524,7 @@ Section "Main" SectionMain
   File /r PortablePython\App
   
   ; Install mapproxy
-  nsExec::ExecToLog '"$INSTDIR\App\Scripts\easy_install.exe" -f "eggs" mapproxy==${VERSION} Shapely==1.2.17 pyproj==1.9.3 cherrypy==3.5.0'
+  nsExec::ExecToLog '"$INSTDIR\App\Scripts\easy_install.exe" -f "eggs" mapproxy==${VERSION} Shapely==1.2.17 pyproj==1.9.3 cherrypy==3.7.0'
   nsExec::ExecToLog '"$INSTDIR\App\Scripts\mapproxy-util.exe" --version'
   ${If} $IsExisting == 1
     Detailprint "Using existing data directory: $\r$\n$DataDir"
