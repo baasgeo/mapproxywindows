@@ -2,13 +2,13 @@
 
 The aim of this installer is to make the MapProxy installation as easy, automatic and production-ready as possible on Windows based systems. During installation, it is possible to specify the data directory, server port and whether to run as a Windows service.
 
-More information can be found [here](http://bartbaas.github.io/MapProxyWindows/).
+More information can be found [here](http://baasgeo.github.io/mapproxywindows/).
 
 ## Contact
 
 Created and maintained by Bart Baas
 
-- http://github.com/bartbaas
+- https://github.com/baasgeo
 - http://nl.linkedin.com/in/baasb/
 - http://baasgeo.com
 
