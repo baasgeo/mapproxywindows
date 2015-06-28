@@ -1,99 +1,115 @@
 <!DOCTYPE html>
-<html>
-   <head>
-      <title>MapProxy Windows installer</title>
-      <meta charset='utf-8' />
-      <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-      <meta name="description" content="Mapproxywindows, MapProxy Windows installer. The aim of this installer is to make the MapProxy installation as easy, automatic and production-ready as possible on Windows based systems." />
-      <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-      <title>Mapproxywindows</title>
-   </head>
-   <body>
-      <!-- HEADER -->
-      <div id="header_wrap" class="outer">
-         <header class="inner">
-            <a id="forkme_banner" href="https://github.com/bartbaas/MapProxyWindows">View on GitHub</a>
-            <h1 id="project_title">Mapproxywindows</h1>
-            <h2 id="project_tagline">MapProxy windows installer</h2>
-            <section id="downloads">
-               <a class="zip_download_link" href="https://github.com/bartbaas/MapProxyWindows/zipball/master">Download this project as a .zip file</a>
-               <a class="tar_download_link" href="https://github.com/bartbaas/MapProxyWindows/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-         </header>
-      </div>
-      <!-- MAIN CONTENT -->
-      <div id="main_content_wrap" class="outer">
-         <section id="main_content" class="inner">
-            <h1>
-               <a name="mapproxy-windows-installer" class="anchor" href="#mapproxy-windows-installer"><span class="octicon octicon-link"></span></a>MapProxy Windows installer
-            </h1>
-            <p>Windows installer for the excellend tile cache solution MapProxy, see <a href="http://mapproxy.org">http://mapproxy.org</a>. This is not an official distribution for MapProxy and is in no way endorsed by <a href="http://mapproxy.org">MapProxy</a> creators.</p>
-            <p>The aim of this installer is to make the MapProxy installation as easy, automatic and production-ready as possible on Windows based systems. During installation, it is possible to specify the data directory, server port and whether to run as a Windows service.</p>
-            <h2>
-               <a name="download" class="anchor" href="#download"><span class="octicon octicon-link"></span></a>Download
-            </h2>
-            <p>You can download the latest stable build of the installer here: <a href="https://github.com/bartbaas/MapProxyWindows/releases/download/1.7.1.1/MapProxy-1.7.1.1.exe">MapProxy 1.7</a></p>
-            <p>Older version and test builds are available at the <a href="https://github.com/bartbaas/MapProxyWindows/releases">releases page</a>.</p>
-            <!--p>A test build for the latest MapProxy is available here: <a href="https://github.com/bartbaas/MapProxyWindows/releases/download/1.8.0-Test/MapProxy-1.8.0-Test.exe">MapProxy 1.8 Test</a></p-->
-            <h2>
-               <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage
-            </h2>
-            <p>The installer should setup MapProxy out of the box. Just download the executable and run the wizard, the default settings are just fine. When the installation is completed, MapProxy is ready to run. Go to Start Menu -&gt; Programs -&gt; MapProxy 1.x.x -&gt; Start MapProxy to start the server. 
-               The demo page is also available at the Start Menu, MapProxy Web Admin Page.
-            </p>
-            <u>Configuration</u>
-            <p>The installer will inspect your system and attempt to automatically populate the dialogs with information contained in the variable %MAPPROXY_DATA_DIR% and %MAPPROXY_PORT%. If this variable is undefined, settings in the registry will be checked. After installation, MapProxy uses the registry settings as runtime startup configuration.
-            </p>
-            <u>Upgrade</u>
-            <p>Installations with different version can both coexist without any problems. Just install the new version alongside the old version. To upgrade, install the new MapProxy installation first using the same port number and data directory. After that, stop the old instance and start the new one. If all is running fine, remove the old version.
-            </p>
-            <h2>
-               <a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation
-            </h2>
-            <p>This MapProxy uses <a href="http://portablepython.com/wiki/Download/">Portable Python</a> 2.7.5 to not depend or interfere on/with other Python installations. MapProxy is configured with <a href="http://www.cherrypy.org/">CherryPy</a> on top as WSGI webserver. Pywin32 is used to run MapProxy as windows service.</p>
-            <p>Tested as working for:</p>
-            <ul>
-               <li>Windows 7 (32 bit)</li>
-               <li>Windows 8 (32 bit)</li>
-               <li>Windows server 2008 (64 bit)</li>
-            </ul>
-            <p>Documentation for MapProxy is available at <a href="http://mapproxy.org/documentation.html">http://mapproxy.org/documentation.html</a>.</p>
-            <h2>
-               <a name="how-to-build" class="anchor" href="#how-to-build"><span class="octicon octicon-link"></span></a>How To Build
-            </h2>
-            <p>For developers wanting to improve or modify this installer, clone this repository first.</p>
-            <pre><code>$ git clone https://github.com/bartbaas/MapProxyWindows.git
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Mapproxywindows by baasgeo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Mapproxywindows</h1>
+      <h2 class="project-tagline">MapProxy windows installer</h2>
+      <a href="https://github.com/baasgeo/mapproxywindows" class="btn">View on GitHub</a>
+      <a href="https://github.com/baasgeo/mapproxywindows/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/baasgeo/mapproxywindows/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="mapproxy-windows-installer" class="anchor" href="#mapproxy-windows-installer" aria-hidden="true"><span class="octicon octicon-link"></span></a>MapProxy Windows installer</h1>
+
+<p>Windows installer for the excellend tile cache solution MapProxy, see <a href="http://mapproxy.org">http://mapproxy.org</a>. This is not an official distribution for MapProxy and is in no way endorsed by <a href="http://mapproxy.org">MapProxy</a> creators.</p>
+
+<p>The aim of this installer is to make the MapProxy installation as easy, automatic and production-ready as possible on Windows based systems. During installation, it is possible to specify the data directory, server port and whether to run as a Windows service.</p>
+
+<h2>
+<a id="download" class="anchor" href="#download" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download</h2>
+
+<p>You can download the latest build <a href="https://github.com/bartbaas/MapProxyWindows/releases/download/1.6.0.1/MapProxy-1.6.0.1.exe">here</a>.</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>The installer should setup MapProxy out of the box. Just download the executable and run the wizard, the default settings are just fine. When the installation is completed, MapProxy is ready to run. Go to Start Menu -&gt; Programs -&gt; MapProxy 1.x.x -&gt; Start MapProxy to start the server. 
+The demo page is also available at the Start Menu, MapProxy Web Admin Page.</p>
+
+<h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<p>This MapProxy uses <a href="http://portablepython.com/wiki/Download/">Portable Python</a> 2.7.5 to not depend or interfere on/with other Python installations. MapProxy is configured with <a href="http://www.cherrypy.org/">CherryPy</a> on top as WSGI webserver. Pywin32 is used to run MapProxy as windows service.</p>
+
+<p>Tested as working for:</p>
+
+<ul>
+<li>Windows 7 (32 bit)</li>
+<li>Windows 8 (32 bit)</li>
+<li>Windows server 2008 (64 bit)</li>
+</ul>
+
+<p>Documentation for MapProxy is available at <a href="http://mapproxy.org/documentation.html">http://mapproxy.org/documentation.html</a>.</p>
+
+<h2>
+<a id="how-to-build" class="anchor" href="#how-to-build" aria-hidden="true"><span class="octicon octicon-link"></span></a>How To Build</h2>
+
+<p>For developers wanting to improve or modify this installer, clone this repository first.</p>
+
+<pre><code>$ git clone https://github.com/bartbaas/MapProxyWindows.git
 $ cd MapProxyWindows
 </code></pre>
-            <p>Make sure you have<code>NSIS</code> and <code>git</code> installed in your system, if not, grab it at <a href="http://nsis.sourceforge.net">http://nsis.sourceforge.net</a> and <a href="http://git-scm.com/download/win">http://git-scm.com/download/win</a>.</p>
-            <p>Now download <a href="http://portablepython.com/wiki/Download/">Portable Python</a> 2.7.6 and install the file to the <code>PortablePython</code> directory. During the extraction wizard, choose the minimal install and select the optional modules PIL and PyWin32.</p>
-            <p>Offline setup is provided by including the egg files for MapProxy. These files have to be downloaded before running the NSIS compiler. Get the egg files by running <code>easy_install</code> from the portable python folder and save them to the folder <code>eggs</code>.</p>
-            <pre><code>$ PortablePython\App\Scripts\easy_install -zmaxd eggs mapproxy==1.7.1 Shapely==1.2.17 pyproj==1.9.3 cherrypy==3.5
+
+<p>Make sure you have<code>NSIS</code> and <code>git</code> installed in your system, if not, grab it at <a href="http://nsis.sourceforge.net">http://nsis.sourceforge.net</a> and <a href="http://git-scm.com/download/win">http://git-scm.com/download/win</a>.</p>
+
+<p>Now download <a href="http://portablepython.com/wiki/Download/">Portable Python</a> 2.7.5 and install the file to the <code>PortablePython</code> directory. During the extraction wizard, choose the minimal install and select the optional modules PIL and PyWin32.</p>
+
+<p>Offline setup is provided by including the egg files for MapProxy. These files have to be downloaded before running the NSIS compiler. Get the egg files by running <code>easy_install</code> from the portable python folder and save them to the folder <code>eggs</code>.</p>
+
+<pre><code>$ PortablePython\App\Scripts\easy_install -zmaxd eggs mapproxy==1.6.0 Shapely pyproj cherrypy==3.2.4
 </code></pre>
-            <p>Now everything is ready to for NSIS. Create the installer by using the <code>makensis</code> program.</p>
-            <pre><code>$ makensis SetupMapProxy.nsi
+
+<p>Now everything is ready to for NSIS. Create the installer by using the <code>makensis</code> program.</p>
+
+<pre><code>$ makensis SetupMapProxy.nsi
 </code></pre>
-            <h2>
-               <a name="contact" class="anchor" href="#contact"><span class="octicon octicon-link"></span></a>Contact
-            </h2>
-            <p>Created and maintained by Bart Baas</p>
-            <ul>
-               <li><a href="http://github.com/bartbaas">http://github.com/bartbaas</a></li>
-               <li><a href="http://nl.linkedin.com/in/baasb/">http://nl.linkedin.com/in/baasb/</a></li>
-               <li><a href="http://baasgeo.com">http://baasgeo.com</a></li>
-            </ul>
-            <h2>
-               <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License
-            </h2>
-            <p>This installer and MapProxy are released under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache Software License 2.0</a>. See <a href="http://www.apache.org/licenses/LICENSE-2.0.html">http://www.apache.org/licenses/LICENSE-2.0.html</a> for additional information.</p>
-         </section>
-      </div>
-      <!-- FOOTER  -->
-      <div id="footer_wrap" class="outer">
-         <footer class="inner">
-            <p class="copyright">Mapproxywindows maintained by <a href="https://github.com/bartbaas">bartbaas</a></p>
-            <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-         </footer>
-      </div>
-   </body>
+
+<h2>
+<a id="contact" class="anchor" href="#contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contact</h2>
+
+<p>Created and maintained by Bart Baas</p>
+
+<ul>
+<li><a href="http://github.com/bartbaas">http://github.com/bartbaas</a></li>
+<li><a href="http://nl.linkedin.com/in/baasb/">http://nl.linkedin.com/in/baasb/</a></li>
+<li><a href="http://baasgeo.com">http://baasgeo.com</a></li>
+</ul>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>This installer and MapProxy are released under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache Software License 2.0</a>. See <a href="http://www.apache.org/licenses/LICENSE-2.0.html">http://www.apache.org/licenses/LICENSE-2.0.html</a> for additional information.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/baasgeo/mapproxywindows">Mapproxywindows</a> is maintained by <a href="https://github.com/baasgeo">baasgeo</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-48060348-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
 </html>
+
