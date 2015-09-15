@@ -32,7 +32,7 @@
 Name "${APPNAMEANDVERSION}"
 BrandingText "${GITPAGE}"
 InstallDir "$PROGRAMFILES\${APPNAME}-${VERSION}"
-OutFile "${APPNAME}-${VERSION}-RC1.exe"
+OutFile "${APPNAME}-${VERSION}.${SEQ}.exe"
 
 ; Compression options
 CRCCheck on
