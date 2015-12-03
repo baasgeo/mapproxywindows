@@ -21,7 +21,7 @@
 ; Define your application name
 !define APPNAME "MapProxy"
 !define COMPANY "Baas geo-information"
-!define VERSION 1.8.0
+!define VERSION 1.8.1
 !define SEQ 0
 !define APPNAMEANDVERSION "${APPNAME} ${VERSION}"
 !define GITPAGE "http://github.com/bartbaas/mapproxywindows"
