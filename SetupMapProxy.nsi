@@ -24,7 +24,7 @@
 !define VERSION 1.8.1
 !define SEQ 0
 !define APPNAMEANDVERSION "${APPNAME} ${VERSION}"
-!define GITPAGE "http://github.com/bartbaas/mapproxywindows"
+!define GITPAGE "http://baasgeo.github.io/mapproxywindows/"
 !define SETTINGSREGPATH "Software\Baasgeo\${APPNAME}"
 !define UNINSTALLREGPATH "Software\Microsoft\Windows\CurrentVersion\Uninstall"
 
