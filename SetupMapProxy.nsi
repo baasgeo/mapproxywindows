@@ -22,7 +22,7 @@
 !define APPNAME "MapProxy"
 !define COMPANY "Baas geo-information"
 !define VERSION 1.8.1
-!define SEQ 0
+!define SEQ 1
 !define APPNAMEANDVERSION "${APPNAME} ${VERSION}"
 !define GITPAGE "http://baasgeo.github.io/mapproxywindows/"
 !define SETTINGSREGPATH "Software\Baasgeo\${APPNAME}"

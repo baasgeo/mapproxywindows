@@ -20,7 +20,8 @@ import pywintypes, pythoncom, win32api, win32serviceutil, win32service
 from logging.config import fileConfig
 import os.path
 import sys
-from cherrypy import wsgiserver 
+import cherrypy
+from cherrypy import wsgiserver
 from mapproxy.wsgiapp import make_wsgi_app
 if sys.hexversion > 0x03000000:
     import winreg
@@ -46,12 +47,27 @@ class MyService(win32serviceutil.ServiceFramework):
         data_dir=str(winreg.QueryValueEx(key, 'DataDir')[0])
         app_config=data_dir + r'\mapproxy.yaml'
         log_conf=data_dir + r'\log.ini'
+
+        cherrypy.config.update({
+            'global':{
+            'log.screen': False,
+            'tools.log_tracebacks.on': True,
+            'engine.autoreload.on': False,
+            'engine.SIGHUP': None,
+            'engine.SIGTERM': None
+            }
+        })
         
         fileConfig(log_conf, {'here': data_dir})
         application=make_wsgi_app(app_config)
         d=wsgiserver.WSGIPathInfoDispatcher({'/mapproxy': application})
         self.server=wsgiserver.CherryPyWSGIServer( (server_ip, port_to_bind), d, numthreads=10, server_name=None, max=-1, request_queue_size=2048, timeout=10, shutdown_timeout=5)
-        self.server.start()
+        # Infinite loop serving requests
+        try:
+            self.server.start()
+        except Exception as e:
+            # Log an error event
+            servicemanager.LogErrorMsg("MapProxy failed to start:\n%s" % e)
 
     def SvcStop(self):
         self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
