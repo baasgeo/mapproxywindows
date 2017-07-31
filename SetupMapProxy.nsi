@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 Baas geo-information
+ * Copyright (c) 2014-2017 Baas geo-information
  * 
  * MapProxy Windows installer creation file.
  * 
@@ -21,10 +21,10 @@
 ; Define your application name
 !define APPNAME "MapProxy"
 !define COMPANY "Baas geo-information"
-!define VERSION 1.8.0
+!define VERSION 1.10.0
 !define SEQ 0
 !define APPNAMEANDVERSION "${APPNAME} ${VERSION}"
-!define GITPAGE "http://github.com/bartbaas/mapproxywindows"
+!define GITPAGE "http://baasgeo.github.io/mapproxywindows/"
 !define SETTINGSREGPATH "Software\Baasgeo\${APPNAME}"
 !define UNINSTALLREGPATH "Software\Microsoft\Windows\CurrentVersion\Uninstall"
 
@@ -92,18 +92,6 @@ VIAddVersionKey CompanyName "${COMPANY}"
 VIAddVersionKey LegalCopyright "${COMPANY}"
 VIAddVersionKey Comments "${GITPAGE}"
 
-; Install options page headers
-LangString TEXT_DATADIR_TITLE ${LANG_ENGLISH} "${APPNAME} Data Directory"
-LangString TEXT_DATADIR_SUBTITLE ${LANG_ENGLISH} "${APPNAME} Data Directory path selection"
-LangString TEXT_TYPE_TITLE ${LANG_ENGLISH} "Type of Installation"
-LangString TEXT_TYPE_SUBTITLE ${LANG_ENGLISH} "Select the type of installation"
-LangString TEXT_READY_TITLE ${LANG_ENGLISH} "Ready to Install"
-LangString TEXT_READY_SUBTITLE ${LANG_ENGLISH} "${APPNAME} is ready to be installed"
-LangString TEXT_CREDS_TITLE ${LANG_ENGLISH} "${APPNAME} Administrator"
-LangString TEXT_CREDS_SUBTITLE ${LANG_ENGLISH} "Set administrator credentials"
-LangString TEXT_PORT_TITLE ${LANG_ENGLISH} "${APPNAME} Web Server Port"
-LangString TEXT_PORT_SUBTITLE ${LANG_ENGLISH} "Set the port that ${APPNAME} will respond on"
-
 ; Interface Settings
 !define MUI_ICON "mapproxy.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\win-uninstall.ico"
@@ -121,7 +109,7 @@ LangString TEXT_PORT_SUBTITLE ${LANG_ENGLISH} "Set the port that ${APPNAME} will
 !define MUI_ABORTWARNING
 
 ; Optional text settings here
-!define MUI_FINISHPAGE_LINK " Installer created and maintained by B. Baas $\n ${GITPAGE}"
+!define MUI_FINISHPAGE_LINK " Installer created and maintained by Baas geo-information $\n ${GITPAGE}"
 !define MUI_FINISHPAGE_LINK_LOCATION "${GITPAGE}"
 !define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of ${APPNAMEANDVERSION}. \r\n\r\n\
 	It is recommended that you close all other applications before starting Setup.\
@@ -151,6 +139,18 @@ Page custom Ready                                             ; Summary page
 ; Set languages (first is default language)
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_RESERVEFILE_LANGDLL
+
+; Install options page headers
+LangString TEXT_DATADIR_TITLE ${LANG_ENGLISH} "${APPNAME} Data Directory"
+LangString TEXT_DATADIR_SUBTITLE ${LANG_ENGLISH} "${APPNAME} Data Directory path selection"
+LangString TEXT_TYPE_TITLE ${LANG_ENGLISH} "Type of Installation"
+LangString TEXT_TYPE_SUBTITLE ${LANG_ENGLISH} "Select the type of installation"
+LangString TEXT_READY_TITLE ${LANG_ENGLISH} "Ready to Install"
+LangString TEXT_READY_SUBTITLE ${LANG_ENGLISH} "${APPNAME} is ready to be installed"
+LangString TEXT_CREDS_TITLE ${LANG_ENGLISH} "${APPNAME} Administrator"
+LangString TEXT_CREDS_SUBTITLE ${LANG_ENGLISH} "Set administrator credentials"
+LangString TEXT_PORT_TITLE ${LANG_ENGLISH} "${APPNAME} Web Server Port"
+LangString TEXT_PORT_SUBTITLE ${LANG_ENGLISH} "Set the port that ${APPNAME} will respond on"
 
 ; Check the user type, and quit if it's not an administrator.
 ; Taken from Examples/UserInfo that ships with NSIS.
@@ -524,7 +524,7 @@ Section "Main" SectionMain
   File /r PortablePython\App
   
   ; Install mapproxy
-  nsExec::ExecToLog '"$INSTDIR\App\Scripts\easy_install.exe" -f "eggs" mapproxy==${VERSION} Shapely==1.2.17 pyproj==1.9.3 cherrypy==3.7.0'
+  nsExec::ExecToLog '"$INSTDIR\App\Scripts\easy_install.exe" -f "eggs" mapproxy==${VERSION} Shapely==1.2.17 pyproj==1.9.3 Pillow==4.2.1 cherrypy==3.8.2'
   nsExec::ExecToLog '"$INSTDIR\App\Scripts\mapproxy-util.exe" --version'
   ${If} $IsExisting == 1
     Detailprint "Using existing data directory: $\r$\n$DataDir"
@@ -567,7 +567,7 @@ Section -FinishSection
   SetShellVarContext all
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Homepage.lnk" "http://mapproxy.org"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Installer.lnk" "http://bartbaas.github.io/MapProxyWindows/"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Installer.lnk" "https://baasgeo.github.io/mapproxywindows/"
   
   ${ConfigWrite} "$INSTDIR\open_admin.py" "subkey=" "r'${SETTINGSREGPATH}\${VERSION}'" $R0
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME} Web Admin Page.lnk" \
