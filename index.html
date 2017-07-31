@@ -67,11 +67,11 @@ $ cd MapProxyWindows
 
 <p>Make sure you have<code>NSIS</code> and <code>git</code> installed in your system, if not, grab it at <a href="http://nsis.sourceforge.net">http://nsis.sourceforge.net</a> and <a href="http://git-scm.com/download/win">http://git-scm.com/download/win</a>.</p>
 
-<p>Now download <a href="http://portablepython.com/wiki/Download/">Portable Python</a> and install the file to the <code>PortablePython</code> directory. During the extraction wizard, choose the minimal install and select the optional modules PIL and PyWin32.</p>
+<p>Now download <a href="http://portablepython.com/wiki/Download/">Portable Python</a> and install the file to the <code>PortablePython</code> directory. During the extraction wizard, choose the minimal install and select the optional modules lxml and PyWin32.</p>
 
 <p>Offline setup is provided by including the egg files for MapProxy. These files have to be downloaded before running the NSIS compiler. Get the egg files by running <code>easy_install</code> from the portable python folder and save them to the folder <code>eggs</code>.</p>
 
-<pre><code>$ PortablePython\App\Scripts\easy_install -zmaxd eggs mapproxy==1.6.0 Shapely pyproj cherrypy==3.2.4
+<pre><code>$ PortablePython\App\Scripts\easy_install -zmaxd eggs mapproxy==1.x.x Shapely pyproj Pillow cherrypy==3.8.2
 </code></pre>
 
 <p>Now everything is ready to for NSIS. Create the installer by using the <code>makensis</code> program.</p>
@@ -82,7 +82,7 @@ $ cd MapProxyWindows
 <h2>
 <a id="contact" class="anchor" href="#contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contact</h2>
 
-<p>Created and maintained by Bart Baas</p>
+<p>Created and maintained by B. Baas, Baas geo-information</p>
 
 <ul>
 <li><a href="https://github.com/baasgeo">https://github.com/baasgeo</a></li>
