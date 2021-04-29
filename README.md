@@ -1,6 +1,6 @@
 # This project is DEPRECATED
 
-This project is no longer actively used at Baasgeo. It therefore lacks a maintainer who can pay attention to pull requests and issues. If you are an active developer who would like to take over, please contact us stating your intentions and providing contact information so that the maintainership can be transferred to you.
+This project is no longer actively used at [Baasgeo](https://www.baasgeo.com/). It therefore lacks a maintainer who can pay attention to pull requests and issues. If you are an active developer who would like to take over, please contact us stating your intentions and providing contact information so that the maintainership can be transferred to you.
 
 # MapProxy Windows installer
 
